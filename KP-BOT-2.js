@@ -35,15 +35,19 @@ function checkInternetConnection() {
 async function fetchAds(url) {
     let browser;
     try {
-        browser = await puppeteer.launch({
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu'
-        ],
-        headless: "new"
+            browser = await puppeteer.launch({
+            executablePath: '/usr/bin/google-chrome',
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--disable-software-rasterizer',
+                '--hide-scrollbars',
+                '--mute-audio'
+            ],
+            headless: "new",
+            ignoreHTTPSErrors: true
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
