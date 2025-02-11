@@ -36,8 +36,14 @@ async function fetchAds(url) {
     let browser;
     try {
         browser = await puppeteer.launch({
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
-        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ],
+        headless: "new"
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
