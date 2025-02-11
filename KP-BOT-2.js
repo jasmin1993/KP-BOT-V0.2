@@ -1,4 +1,4 @@
-﻿const puppeteer = require('puppeteer');
+const puppeteer = require("puppeteer");
 const TelegramBot = require('node-telegram-bot-api');
 const dns = require('dns');
 require("dotenv").config();
@@ -35,21 +35,9 @@ function checkInternetConnection() {
 async function fetchAds(url) {
     let browser;
     try {
-        browser = await puppeteer.launch({ 
-
-            //headless: true
-
-            args: [
-                "--disable-setuid-sandbox",
-                "--no-sandbox",
-                "--single-process",
-                "--no-zygote",
-            ],
-            executablePath:
-                process.env.NODE_ENV === "production"
-                    ? process.env.PUPPETEER_EXECUTABLE_PATH
-                    : puppeteer.executablePath(),
-
+        browser = await puppeteer.launch({
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
+        args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
