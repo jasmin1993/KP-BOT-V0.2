@@ -1,6 +1,7 @@
 ﻿const puppeteer = require('puppeteer');
 const TelegramBot = require('node-telegram-bot-api');
 const dns = require('dns');
+require("dotenv").config();
 
 // 🚀 Ubaci svoj Telegram bot token i chat ID
 const token = process.env.TELEGRAM_TOKEN;
@@ -34,7 +35,22 @@ function checkInternetConnection() {
 async function fetchAds(url) {
     let browser;
     try {
-        browser = await puppeteer.launch({ headless: true });
+        browser = await puppeteer.launch({ 
+
+            //headless: true
+
+            args: [
+                "--disable-setuid-sandbox",
+                "--no-sandbox",
+                "--single-process",
+                "--no-zygote",
+            ],
+            executablePath:
+                process.env.NODE_ENV === "production"
+                    ? process.env.PUPPETEER_EXECUTABLE_PATH
+                    : puppeteer.executablePath(),
+
+        });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
 
